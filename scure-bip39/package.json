@@ -1,0 +1,60 @@
+{
+  "name": "@metamask/scure-bip39",
+  "version": "2.1.0",
+  "description": "MetaMask fork of @scure/bip39: a secure, audited & minimal implementation of BIP39 mnemonic phrases",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "@noble/hashes": "~1.1.1",
+    "@scure/base": "~1.1.0"
+  },
+  "devDependencies": {
+    "@metamask/auto-changelog": "^2.6.1",
+    "@types/mocha": "9.0.0",
+    "mocha": "9.2.0",
+    "prettier": "2.6.2",
+    "typescript": "4.7.3"
+  },
+  "author": "Paul Miller (https://paulmillr.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaMask/scure-bip39.git"
+  },
+  "contributors": [
+    "Patricio Palladino <patricio@nomiclabs.io>",
+    "Paul Miller (https://paulmillr.com)"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "lint": "prettier --check 'src/**/*.ts' 'test/*.test.ts'",
+    "format": "prettier --write 'src/**/*.ts' 'test/*.test.ts'",
+    "test": "cd test && tsc && mocha bip39.test.js"
+  },
+  "keywords": [
+    "bip39",
+    "mnemonic",
+    "phrase",
+    "code",
+    "bip0039",
+    "bip-39",
+    "micro",
+    "scure",
+    "wordlist",
+    "noble"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bugs": {
+    "url": "https://github.com/MetaMask/scure-bip39/issues"
+  },
+  "homepage": "https://github.com/MetaMask/scure-bip39#readme",
+  "directories": {
+    "test": "test"
+  }
+}

@@ -1,0 +1,61 @@
+import { BIP44CoinTypeNode } from './BIP44CoinTypeNode';
+import { BIP44Node } from './BIP44Node';
+import type { SLIP10Path } from './constants';
+import type { SupportedCurve } from './curves';
+import { SLIP10Node } from './SLIP10Node';
+/**
+ * Ethereum default seed path: "m/44'/60'/0'/0/{account_index}"
+ * Multipath: "bip32:44'/bip32:60'/bip32:0'/bip32:0/bip32:{account_index}"
+ *
+ * m: { privateKey, chainCode } = sha512Hmac("Bitcoin seed", masterSeed)
+ * 44': { privateKey, chainCode } = parentKey.privateKey + sha512Hmac(parentKey.chainCode, [0x00, parentKey.privateKey, index + HARDENED_OFFSET])
+ * 60': { privateKey, chainCode } = parentKey.privateKey + sha512Hmac(parentKey.chainCode, [0x00, parentKey.privateKey, index + HARDENED_OFFSET])
+ * 0': { privateKey, chainCode } = parentKey.privateKey + sha512Hmac(parentKey.chainCode, [0x00, parentKey.privateKey, index + HARDENED_OFFSET])
+ * 0: { privateKey, chainCode } = parentKey.privateKey + sha512Hmac(parentKey.chainCode, [parentKey.publicKey, index])
+ * 0: { privateKey, chainCode } = parentKey.privateKey + sha512Hmac(parentKey.chainCode, [parentKey.publicKey, index])
+ */
+declare type BaseDeriveKeyFromPathArgs = {
+    path: SLIP10Path;
+    depth?: number;
+};
+declare type DeriveKeyFromPathNodeArgs = BaseDeriveKeyFromPathArgs & {
+    node?: SLIP10Node | BIP44Node | BIP44CoinTypeNode;
+};
+declare type DeriveKeyFromPathCurveArgs = BaseDeriveKeyFromPathArgs & {
+    curve: SupportedCurve;
+};
+declare type DeriveKeyFromPathArgs = DeriveKeyFromPathNodeArgs | DeriveKeyFromPathCurveArgs;
+/**
+ * Takes a full or partial HD path string and returns the key corresponding to
+ * the given path, with the following constraints:
+ *
+ * - If the path starts with a BIP-32 node, a parent key must be provided.
+ * - If the path starts with a BIP-39 node, a parent key must NOT be provided.
+ * - The path cannot exceed 5 BIP-32 nodes in length, optionally preceded by
+ * a single BIP-39 node.
+ *
+ * WARNING: It is the consumer's responsibility to ensure that the path is valid
+ * relative to its parent key.
+ *
+ * @param args - The arguments for deriving a key from a path.
+ * @param args.path - A full or partial HD path, e.g.:
+ * `bip39:SEED_PHRASE/bip32:44'/bip32:60'/bip32:0'/bip32:0/bip32:0`.
+ * BIP-39 seed phrases must be lowercase, space-delimited, and 12-24 words long.
+ * @param args.node - The node to derive from.
+ * @param args.depth - The depth of the segment.
+ * @returns The derived key.
+ */
+export declare function deriveKeyFromPath(args: DeriveKeyFromPathArgs): Promise<SLIP10Node>;
+/**
+ * The path segment must be one of the following:
+ * - A lone BIP-32 path node.
+ * - A lone BIP-39 path node.
+ * - A multipath.
+ *
+ * @param path - The path segment string to validate.
+ * @param hasKey - Whether the path segment has a key.
+ * @param depth - The depth of the segment.
+ */
+export declare function validatePathSegment(path: SLIP10Path, hasKey: boolean, depth?: number): void;
+export {};
+//# sourceMappingURL=derivation.d.ts.map

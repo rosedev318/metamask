@@ -1,0 +1,42 @@
+export declare const PUBLIC_KEY_VERSION = 76067358;
+export declare const PRIVATE_KEY_VERSION = 76066276;
+export declare type ExtendedKeyVersion = typeof PUBLIC_KEY_VERSION | typeof PRIVATE_KEY_VERSION;
+/**
+ * An extended public or private key. Contains either a public or private key,
+ * depending on the version.
+ */
+declare type ExtendedKeyLike = {
+    version: ExtendedKeyVersion;
+    depth: number;
+    parentFingerprint: number;
+    index: number;
+    chainCode: Uint8Array;
+};
+declare type ExtendedPublicKey = ExtendedKeyLike & {
+    version: typeof PUBLIC_KEY_VERSION;
+    publicKey: Uint8Array;
+};
+declare type ExtendedPrivateKey = ExtendedKeyLike & {
+    version: typeof PRIVATE_KEY_VERSION;
+    privateKey: Uint8Array;
+};
+export declare type ExtendedKey = ExtendedPublicKey | ExtendedPrivateKey;
+/**
+ * Decodes an extended public or private key. In the case of an extended public key, the public key
+ * is returned in the uncompressed form.
+ *
+ * Throws an error if the extended key is invalid.
+ *
+ * @param extendedKey - The extended key string to attempt to decode.
+ * @returns The decoded extended key.
+ */
+export declare const decodeExtendedKey: (extendedKey: string) => ExtendedKey;
+/**
+ * Encodes an extended public or private key. Assumes that all the inputs are verified beforehand.
+ *
+ * @param extendedKey - The extended key data to encode.
+ * @returns The encoded extended key.
+ */
+export declare const encodeExtendedKey: (extendedKey: ExtendedKey) => string;
+export {};
+//# sourceMappingURL=extended-keys.d.ts.map

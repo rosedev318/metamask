@@ -1,0 +1,28 @@
+{
+  "name": "@metamask/forwarder",
+  "version": "1.1.0",
+  "description": "Forwarding page for one-click onboarding",
+  "homepage": "https://github.com/MetaMask/forwarder#readme",
+  "bugs": {
+    "url": "https://github.com/MetaMask/forwarder/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MetaMask/forwarder.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "license": "MIT",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "start": "static-server ./dist --port 9010",
+    "deploy": "./deploy.sh"
+  },
+  "devDependencies": {
+    "static-server": "^2.2.1"
+  }
+}

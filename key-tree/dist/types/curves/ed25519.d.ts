@@ -1,0 +1,11 @@
+export { CURVE as curve } from '@noble/ed25519';
+export declare const name = "ed25519";
+export declare const secret: Uint8Array;
+export declare const isValidPrivateKey: (_privateKey: Uint8Array | string | bigint) => boolean;
+export declare const deriveUnhardenedKeys = false;
+export declare const publicKeyLength = 33;
+export declare const getPublicKey: (privateKey: Uint8Array, _compressed?: boolean) => Promise<Uint8Array>;
+export declare const publicAdd: (_publicKey: Uint8Array, _tweak: Uint8Array) => Uint8Array;
+export declare const compressPublicKey: (publicKey: Uint8Array) => Uint8Array;
+export declare const decompressPublicKey: (publicKey: Uint8Array) => Uint8Array;
+//# sourceMappingURL=ed25519.d.ts.map

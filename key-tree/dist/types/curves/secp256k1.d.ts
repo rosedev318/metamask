@@ -1,0 +1,11 @@
+export { CURVE as curve } from '@noble/secp256k1';
+export declare const name = "secp256k1";
+export declare const secret: Uint8Array;
+export declare const deriveUnhardenedKeys = true;
+export declare const publicKeyLength = 65;
+export declare const isValidPrivateKey: (privateKey: Uint8Array) => boolean;
+export declare const getPublicKey: (privateKey: Uint8Array, compressed?: boolean) => Uint8Array;
+export declare const publicAdd: (publicKey: Uint8Array, tweak: Uint8Array) => Uint8Array;
+export declare const compressPublicKey: (publicKey: Uint8Array) => Uint8Array;
+export declare const decompressPublicKey: (publicKey: Uint8Array) => Uint8Array;
+//# sourceMappingURL=secp256k1.d.ts.map

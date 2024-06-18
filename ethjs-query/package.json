@@ -1,0 +1,224 @@
+{
+  "name": "@metamask/ethjs-query",
+  "version": "0.7.1",
+  "description": "A simple query layer for the Ethereum RPC.",
+  "main": "lib/index.js",
+  "files": [
+    "dist",
+    "internals",
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "start": "npm test",
+    "release": "npmpub",
+    "pretest": "npm run lint",
+    "prebuild": "npm run build:clean && npm run test",
+    "prepare": "npm run build",
+    "build:clean": "npm run test:clean && rimraf ./dist",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib --copy-files",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack --config ./internals/webpack/webpack.config.js ./lib/index.js --progress",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack --config ./internals/webpack/webpack.config.js ./lib/index.js --progress",
+    "build": "npm run build:commonjs && npm run test:lib && npm run build:umd && npm run build:umd:min",
+    "lint": "npm run lint:js",
+    "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern **/**.min.js",
+    "lint:js": "npm run lint:eslint -- . ",
+    "test:clean": "rimraf ./coverage",
+    "test": "mocha ./src/tests/**/*.js -R spec --timeout 2000000",
+    "test:coverage": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- src/tests/**/*.js -R spec --timeout 2000000",
+    "test:lib": "mocha ./lib/tests/**/*.js -R spec --timeout 2000000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaMask/ethjs-query.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "ethereum",
+    "query",
+    "rpc",
+    "web3"
+  ],
+  "engines": {
+    "npm": ">=6",
+    "node": ">=8.17.0"
+  },
+  "author": "Nick Dodson <nick.dodson@consensys.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MetaMask/ethjs-query/issues"
+  },
+  "homepage": "https://github.com/MetaMask/ethjs-query#readme",
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-template-literals",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-literals",
+      "@babel/plugin-transform-function-name",
+      "@babel/plugin-transform-arrow-functions",
+      "@babel/plugin-transform-block-scoped-functions",
+      [
+        "@babel/plugin-transform-classes",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-object-super",
+      "@babel/plugin-transform-shorthand-properties",
+      [
+        "@babel/plugin-transform-computed-properties",
+        {
+          "loose": true
+        }
+      ],
+      [
+        "@babel/plugin-transform-for-of",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-sticky-regex",
+      "@babel/plugin-transform-unicode-regex",
+      [
+        "@babel/plugin-transform-spread",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-parameters",
+      [
+        "@babel/plugin-transform-destructuring",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-block-scoping",
+      "@babel/plugin-proposal-object-rest-spread",
+      "@babel/plugin-transform-member-expression-literals",
+      "@babel/plugin-transform-property-literals"
+    ],
+    "env": {
+      "commonjs": {
+        "plugins": [
+          [
+            "@babel/plugin-transform-modules-commonjs",
+            {
+              "loose": true
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@metamask/ethjs-format": "^0.3.0",
+    "@metamask/ethjs-rpc": "^0.4.0",
+    "promise-to-callback": "^1.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/eslint-parser": "^7.11.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-arrow-functions": "^7.0.0",
+    "@babel/plugin-transform-block-scoped-functions": "^7.0.0",
+    "@babel/plugin-transform-block-scoping": "^7.0.0",
+    "@babel/plugin-transform-classes": "^7.0.0",
+    "@babel/plugin-transform-computed-properties": "^7.0.0",
+    "@babel/plugin-transform-destructuring": "^7.0.0",
+    "@babel/plugin-transform-for-of": "^7.0.0",
+    "@babel/plugin-transform-function-name": "^7.0.0",
+    "@babel/plugin-transform-literals": "^7.0.0",
+    "@babel/plugin-transform-member-expression-literals": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/plugin-transform-object-super": "^7.0.0",
+    "@babel/plugin-transform-parameters": "^7.0.0",
+    "@babel/plugin-transform-property-literals": "^7.0.0",
+    "@babel/plugin-transform-shorthand-properties": "^7.0.0",
+    "@babel/plugin-transform-spread": "^7.0.0",
+    "@babel/plugin-transform-sticky-regex": "^7.0.0",
+    "@babel/plugin-transform-template-literals": "^7.0.0",
+    "@babel/plugin-transform-unicode-regex": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@metamask/ethjs-util": "^0.3.0",
+    "babel-loader": "^8.0.0",
+    "bignumber.js": "^9.1.2",
+    "chai": "^4.3.10",
+    "cross-env": "^6.0.3",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-import-resolver-webpack": "^0.2.4",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2",
+    "ethjs-abi": "0.2.1",
+    "ganache-cli": "6.12.2",
+    "hard-rejection": "^2.1.0",
+    "istanbul": "0.4.5",
+    "json-loader": "^0.5.7",
+    "mocha": "^7.2.0",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^3.0.2",
+    "webpack": "^3.12.0"
+  },
+  "peerDependencies": {
+    "@babel/runtime": "^7.0.0"
+  },
+  "eslintConfig": {
+    "parser": "@babel/eslint-parser",
+    "extends": "airbnb",
+    "env": {
+      "node": true,
+      "mocha": true,
+      "es6": true
+    },
+    "overrides": [
+      {
+        "files": [
+          "src/tests/**.js"
+        ],
+        "rules": {
+          "import/extensions": 0,
+          "import/no-extraneous-dependencies": 0
+        }
+      }
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "requireConfigFile": false,
+      "sourceType": "module"
+    },
+    "rules": {
+      "arrow-body-style": [
+        2,
+        "as-needed"
+      ],
+      "comma-dangle": [
+        2,
+        "always-multiline"
+      ],
+      "indent": [
+        2,
+        2,
+        {
+          "MemberExpression": 0,
+          "SwitchCase": 1
+        }
+      ],
+      "import/no-unresolved": 2,
+      "max-len": 0,
+      "newline-per-chained-call": 0,
+      "no-console": 1,
+      "no-use-before-define": 0,
+      "prefer-template": 2
+    }
+  },
+  "pre-commit": "build"
+}

@@ -1,0 +1,202 @@
+import type { BIP44NodeInterface, JsonBIP44Node } from './BIP44Node';
+import { BIP44Node } from './BIP44Node';
+import type { BIP39Node, BIP44Depth, BIP44PurposeNodeToken, CoinTypeHDPathString, HardenedBIP32Node } from './constants';
+import type { SupportedCurve } from './curves';
+import type { CoinTypeToAddressIndices } from './utils';
+import { getBIP44ChangePathString } from './utils';
+export declare type CoinTypeHDPathTuple = [
+    BIP39Node,
+    typeof BIP44PurposeNodeToken,
+    HardenedBIP32Node
+];
+export declare const BIP_44_COIN_TYPE_DEPTH = 2;
+export declare type JsonBIP44CoinTypeNode = JsonBIP44Node & {
+    readonly coin_type: number;
+    readonly path: CoinTypeHDPathString;
+};
+export declare type BIP44CoinTypeNodeInterface = BIP44NodeInterface & {
+    readonly coin_type: number;
+    readonly path: CoinTypeHDPathString;
+};
+/**
+ * A wrapper object for BIP-44 `coin_type` keys. `coin_type` is the index
+ * specifying the protocol for which deeper keys are intended. For the
+ * authoritative list of coin types, please see
+ * [SLIP-44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
+ *
+ * Recall that a BIP-44 HD tree path consists of the following nodes:
+ *
+ * `m / 44' / coin_type' / account' / change / address_index`
+ *
+ * With the following depths:
+ *
+ * `0 / 1 / 2 / 3 / 4 / 5`
+ *
+ */
+export declare class BIP44CoinTypeNode implements BIP44CoinTypeNodeInterface {
+    #private;
+    /**
+     * Constructs a BIP-44 `coin_type` node. `coin_type` is the index
+     * specifying the protocol for which deeper keys are intended. For the
+     * authoritative list of coin types, please see
+     * [SLIP-44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     *
+     * @param json - The {@link JsonBIP44Node} for the key of this node.
+     * @param coin_type - The coin_type index of this node. Must be a non-negative
+     * integer.
+     */
+    static fromJSON(json: JsonBIP44Node, coin_type: number): Promise<BIP44CoinTypeNode>;
+    /**
+     * Constructs a BIP-44 `coin_type` node. `coin_type` is the index
+     * specifying the protocol for which deeper keys are intended. For the
+     * authoritative list of coin types, please see
+     * [SLIP-44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     *
+     * @param derivationPath - The derivation path for the key of this node.
+     */
+    static fromDerivationPath(derivationPath: CoinTypeHDPathTuple): Promise<BIP44CoinTypeNode>;
+    /**
+     * Constructs a BIP-44 `coin_type` node. `coin_type` is the index
+     * specifying the protocol for which deeper keys are intended. For the
+     * authoritative list of coin types, please see
+     * [SLIP-44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     *
+     * @param node - The {@link BIP44Node} for the key of this node.
+     * @param coin_type - The coin_type index of this node. Must be a non-negative
+     * integer.
+     */
+    static fromNode(node: BIP44Node, coin_type: number): Promise<BIP44CoinTypeNode>;
+    readonly path: CoinTypeHDPathString;
+    readonly coin_type: number;
+    private constructor();
+    get depth(): BIP44Depth;
+    get privateKeyBytes(): Uint8Array | undefined;
+    get publicKeyBytes(): Uint8Array;
+    get chainCodeBytes(): Uint8Array;
+    get privateKey(): string | undefined;
+    get publicKey(): string;
+    get compressedPublicKey(): string;
+    get compressedPublicKeyBytes(): Uint8Array;
+    get chainCode(): string;
+    get address(): string;
+    get masterFingerprint(): number | undefined;
+    get parentFingerprint(): number;
+    get fingerprint(): number;
+    get index(): number;
+    get curve(): SupportedCurve;
+    get extendedKey(): string;
+    /**
+     * Derives a BIP-44 `address_index` key corresponding to the path of this
+     * node and the specified `account`, `change`, and `address_index` values.
+     * `address_index` keys are normally the keys used to generate user account
+     * addresses.
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     *
+     * @param indices - The BIP-44 index values to use in key derivation.
+     * @param indices.account - The `account` index. Default: `0`
+     * @param indices.change - The `change` index. Default: `0`
+     * @param indices.address_index - The `address_index` index.
+     * @returns The derived BIP-44 `address_index` node.
+     */
+    deriveBIP44AddressKey({ account, change, address_index, }: CoinTypeToAddressIndices): Promise<BIP44Node>;
+    toJSON(): JsonBIP44CoinTypeNode;
+}
+/**
+ * Derives a BIP-44 address key corresponding to the specified derivation path,
+ * given either by a {@link BIP44CoinTypeNode} or derivation path tuple.
+ *
+ * Recall that a BIP-44 HD tree path consists of the following nodes:
+ *
+ * `m / 44' / coin_type' / account' / change / address_index`
+ *
+ * With the following depths:
+ *
+ * `0 / 1 / 2 / 3 / 4 / 5`
+ *
+ * @param parentKeyOrNode - The `coin_type` parent key to derive from.
+ * @param indices - The BIP-44 index values to use in key derivation.
+ * @param indices.account - The `account` index. Default: `0`.
+ * @param indices.change - The `change` index. Default: `0`.
+ * @param indices.address_index - The `address_index` index.
+ * @returns The derived `address_index` key for the specified derivation path.
+ */
+export declare function deriveBIP44AddressKey(parentKeyOrNode: BIP44CoinTypeNode | JsonBIP44CoinTypeNode | string, { account, change, address_index }: CoinTypeToAddressIndices): Promise<BIP44Node>;
+export declare type BIP44AddressKeyDeriver = {
+    /**
+     * @param address_index - The `address_index` value.
+     * @param isHardened - Whether the derived index is hardened.
+     * @returns The key corresponding to the path of this deriver and the
+     * specified `address_index` value.
+     */
+    (address_index: number, isHardened?: boolean): Promise<BIP44Node>;
+    /**
+     * A human-readable representation of the derivation path of this deriver
+     * function, excluding the `address_index`, which is parameterized.
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     */
+    path: ReturnType<typeof getBIP44ChangePathString>;
+    /**
+     * The `coin_type` index of addresses derived by this deriver function.
+     */
+    coin_type: number;
+};
+/**
+ * Creates a function that derives BIP-44 address keys corresponding to the
+ * specified derivation path, given either by a {@link BIP44CoinTypeNode} or
+ * derivation path tuple.
+ *
+ * Recall that a BIP-44 HD tree path consists of the following nodes:
+ *
+ * `m / 44' / coin_type' / account' / change / address_index`
+ *
+ * With the following depths:
+ *
+ * `0 / 1 / 2 / 3 / 4 / 5`
+ *
+ * @param node - The {@link BIP44CoinTypeNode} to derive address keys from.
+ * This node contains a BIP-44 key of depth 2, `coin_type`.
+ * @param accountAndChangeIndices - The `account` and `change` indices that
+ * will be used to derive addresses.
+ * @returns The deriver function for the derivation path specified by the
+ * `coin_type` node, `account`, and `change` indices.
+ */
+export declare function getBIP44AddressKeyDeriver(node: BIP44CoinTypeNode | JsonBIP44CoinTypeNode | string, accountAndChangeIndices?: Omit<CoinTypeToAddressIndices, 'address_index'>): Promise<BIP44AddressKeyDeriver>;
+//# sourceMappingURL=BIP44CoinTypeNode.d.ts.map

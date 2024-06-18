@@ -1,0 +1,1 @@
+{"version":3,"file":"crypto-compare.d.ts","sourceRoot":"","sources":["../src/crypto-compare.ts"],"names":[],"mappings":"AAyBA;;;;;;;GAOG;AACH,wBAAsB,iBAAiB,CACrC,QAAQ,EAAE,MAAM,EAChB,cAAc,EAAE,MAAM,EACtB,cAAc,CAAC,EAAE,OAAO,GACvB,OAAO,CAAC;IACT,cAAc,EAAE,MAAM,CAAC;IACvB,iBAAiB,EAAE,MAAM,CAAC;CAC3B,CAAC,CAoCD"}

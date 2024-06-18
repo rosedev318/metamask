@@ -1,0 +1,30 @@
+import * as ed25519 from './ed25519';
+import * as secp256k1 from './secp256k1';
+export declare type SupportedCurve = keyof typeof curves;
+export declare const curves: {
+    secp256k1: typeof secp256k1;
+    ed25519: typeof ed25519;
+};
+export declare type Curve = {
+    name: SupportedCurve;
+    secret: Uint8Array;
+    deriveUnhardenedKeys: boolean;
+    publicKeyLength: number;
+    curve: {
+        n: bigint;
+    };
+    getPublicKey: (privateKey: Uint8Array, compressed?: boolean) => Uint8Array | Promise<Uint8Array>;
+    isValidPrivateKey: (privateKey: Uint8Array) => boolean;
+    publicAdd: (publicKey: Uint8Array, tweak: Uint8Array) => Uint8Array;
+    compressPublicKey: (publicKey: Uint8Array) => Uint8Array;
+    decompressPublicKey: (publicKey: Uint8Array) => Uint8Array;
+};
+/**
+ * Get a curve by name.
+ *
+ * @param curveName - The name of the curve to get.
+ * @returns The curve.
+ */
+export declare function getCurveByName(curveName: SupportedCurve): Curve;
+export declare const mod: (a: bigint, b?: bigint | undefined) => bigint;
+//# sourceMappingURL=curve.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"fetchGasEstimatesViaEthFeeHistory.d.ts","sourceRoot":"","sources":["../../src/fetchGasEstimatesViaEthFeeHistory.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,QAAQ,MAAM,qBAAqB,CAAC;AAMhD,OAAO,KAAK,EAAE,eAAe,EAAE,MAAM,oBAAoB,CAAC;AAE1D;;;;;;;;;;;;;;;;;GAiBG;AACH,wBAA8B,iCAAiC,CAC7D,QAAQ,EAAE,QAAQ,GACjB,OAAO,CAAC,eAAe,CAAC,CAuB1B"}

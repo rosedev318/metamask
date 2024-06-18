@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/browser/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;AAAA,+DAA2D;AAAlD,iIAAA,OAAO,OAAW;AAC3B,kDAAgC","sourcesContent":["export { default as browser } from 'webextension-polyfill';\nexport * from './browser-proxy';\n"]}

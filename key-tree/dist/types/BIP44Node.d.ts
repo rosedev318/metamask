@@ -1,0 +1,176 @@
+import type { BIP44Depth, PartialHDPathTuple, RootedSLIP10PathTuple } from './constants';
+import type { SupportedCurve } from './curves';
+import { SLIP10Node } from './SLIP10Node';
+export declare type BIP44ExtendedKeyOptions = {
+    readonly depth: number;
+    readonly parentFingerprint: number;
+    readonly index: number;
+    readonly chainCode: Uint8Array | string;
+    readonly privateKey?: Uint8Array | string | undefined;
+    readonly publicKey?: Uint8Array | string | undefined;
+};
+export declare type BIP44DerivationPathOptions = {
+    readonly derivationPath: RootedSLIP10PathTuple;
+};
+/**
+ * A wrapper for BIP-44 Hierarchical Deterministic (HD) tree nodes, i.e.
+ * cryptographic keys used to generate keypairs and addresses for cryptocurrency
+ * protocols.
+ */
+export declare type JsonBIP44Node = {
+    /**
+     * The 0-indexed BIP-44 path depth of this node.
+     *
+     * A BIP-44 path is of the form:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     */
+    readonly depth: BIP44Depth;
+    /**
+     * The fingerprint of the master node, i.e., the node at depth 0. May be
+     * undefined if this node was created from an extended key.
+     */
+    readonly masterFingerprint?: number | undefined;
+    /**
+     * The fingerprint of the parent key, or 0 if this is a master node.
+     */
+    readonly parentFingerprint: number;
+    /**
+     * The index of the node, or 0 if this is a master node.
+     */
+    readonly index: number;
+    /**
+     * The hexadecimal string representation of the private key for this node.
+     * May be `undefined` if the node is a public node.
+     */
+    readonly privateKey?: string | undefined;
+    /**
+     * The hexadecimal string representation of the public key for this node.
+     */
+    readonly publicKey: string;
+    /**
+     * The hexadecimal string representation of the chain code for this node.
+     */
+    readonly chainCode: string;
+};
+export declare type BIP44NodeInterface = JsonBIP44Node & {
+    /**
+     * @returns A JSON-compatible representation of this node's data fields.
+     */
+    toJSON(): JsonBIP44Node;
+};
+/**
+ * A wrapper for BIP-44 Hierarchical Deterministic (HD) tree nodes, i.e.
+ * cryptographic keys used to generate keypairs and addresses for cryptocurrency
+ * protocols.
+ *
+ * This class contains methods and fields that may not serialize well. Use
+ * {@link BIP44Node.toJSON} to get a JSON-compatible representation.
+ */
+export declare class BIP44Node implements BIP44NodeInterface {
+    #private;
+    /**
+     * Wrapper of the {@link fromExtendedKey} function. Refer to that function
+     * for documentation.
+     *
+     * @param json - The JSON representation of a SLIP-10 node.
+     */
+    static fromJSON(json: JsonBIP44Node): Promise<BIP44Node>;
+    /**
+     * Create a new BIP-44 node from a key and chain code. You must specify
+     * either a private key or a public key. When specifying a private key,
+     * the public key will be derived from the private key.
+     *
+     * All parameters are stringently validated, and an error is thrown if
+     * validation fails.
+     *
+     * @param options - An object containing the extended key, or an extended
+     * public (xpub) or private (xprv) key.
+     * @param options.depth - The depth of the node.
+     * @param options.privateKey - The private key for the node.
+     * @param options.publicKey - The public key for the node. If a private key is
+     * specified, this parameter is ignored.
+     * @param options.chainCode - The chain code for the node.
+     */
+    static fromExtendedKey(options: BIP44ExtendedKeyOptions | string): Promise<BIP44Node>;
+    /**
+     * Create a new BIP-44 node from a derivation path. The derivation path
+     * must be rooted, i.e. it must begin with a BIP-39 node, given as a string of
+     * the form `bip39:MNEMONIC`, where `MNEMONIC` is a space-separated list of
+     * BIP-39 seed phrase words.
+     *
+     * All parameters are stringently validated, and an error is thrown if
+     * validation fails.
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     *
+     * @param options - An object containing the derivation path.
+     * @param options.derivationPath - The rooted HD tree path that will be used
+     * to derive the key of this node.
+     */
+    static fromDerivationPath({ derivationPath, }: BIP44DerivationPathOptions): Promise<BIP44Node>;
+    get depth(): BIP44Depth;
+    get privateKeyBytes(): Uint8Array | undefined;
+    get publicKeyBytes(): Uint8Array;
+    get chainCodeBytes(): Uint8Array;
+    get privateKey(): string | undefined;
+    get publicKey(): string;
+    get compressedPublicKey(): string;
+    get compressedPublicKeyBytes(): Uint8Array;
+    get chainCode(): string;
+    get address(): string;
+    get masterFingerprint(): number | undefined;
+    get parentFingerprint(): number;
+    get fingerprint(): number;
+    get index(): number;
+    get extendedKey(): string;
+    get curve(): SupportedCurve;
+    constructor(node: SLIP10Node);
+    /**
+     * Get a neutered version of this node, i.e. a node without a private key.
+     *
+     * @returns A neutered version of this node.
+     */
+    neuter(): BIP44Node;
+    /**
+     * Derives a child of the key contains be this node and returns a new
+     * {@link BIP44Node} containing the child key.
+     *
+     * The specified path must be a valid HD path from this node, per BIP-44.
+     * At present, this means that the path must consist of no more than 5 BIP-32
+     * nodes, depending on the depth of this node.
+     *
+     * Recall that a BIP-44 HD tree path consists of the following nodes:
+     *
+     * `m / 44' / coin_type' / account' / change / address_index`
+     *
+     * With the following depths:
+     *
+     * `0 / 1 / 2 / 3 / 4 / 5`
+     *
+     * @param path - The partial (non-rooted) BIP-44 HD tree path will be used
+     * to derive a child key from the parent key contained within this node.
+     * @returns The {@link BIP44Node} corresponding to the derived child key.
+     */
+    derive(path: PartialHDPathTuple): Promise<BIP44Node>;
+    toJSON(): JsonBIP44Node;
+}
+/**
+ * Validates a BIP-44 path depth. Effectively, asserts that the depth is an
+ * integer `number` N such that 0 <= N <= 5. Throws an error if validation
+ * fails.
+ *
+ * @param depth - The depth to validate.
+ */
+export declare function validateBIP44Depth(depth: unknown): asserts depth is BIP44Depth;
+//# sourceMappingURL=BIP44Node.d.ts.map

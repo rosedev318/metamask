@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../../src/js/colors/index.ts"],"names":[],"mappings":";;;AAAA,mCAA6C;AAApC,iGAAA,MAAM,OAAW;AAC1B,mCAAkC;AAAzB,gGAAA,MAAM,OAAA","sourcesContent":["export { colors as default } from './colors';\nexport { colors } from './colors';\n"]}

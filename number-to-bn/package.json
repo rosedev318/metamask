@@ -1,0 +1,69 @@
+{
+  "name": "@metamask/number-to-bn",
+  "version": "1.7.1",
+  "description": "A simple method that will convert numbers, hex, BN or bignumber.js object into a BN.js object.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npm test",
+    "release": "npmpub",
+    "prepare": "npm run build",
+    "prebuild": "npm run build:clean && npm run test",
+    "build:clean": "npm run test:clean && rimraf ./dist",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack --config ./internals/webpack/webpack.config.js --progress",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack --config ./internals/webpack/webpack.config.js --progress",
+    "build:stats": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack --config ./internals/webpack/webpack.config.js --progress --profile --json > dist/stats.json",
+    "build": "npm run build:umd && npm run build:umd:min",
+    "test:clean": "rimraf ./coverage",
+    "test": "mocha ./src/tests/**/*.js -R spec --timeout 2000000",
+    "test-travis": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- src/tests/**/*.js -R spec --timeout 2000000",
+    "test:browser": "zuul -- ./src/tests/*.js",
+    "test:browser-local": "zuul --local -- ./src/tests/*.js",
+    "coveralls": "npm run test-travis && cat ./coverage/lcov.info | coveralls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MetaMask/number-to-bn.git"
+  },
+  "engines": {
+    "npm": ">=6",
+    "node": ">=8.17.0"
+  },
+  "keywords": [
+    "number",
+    "to",
+    "bn",
+    "convert",
+    "hex",
+    "bn.js"
+  ],
+  "author": "Nick Dodson <thenickdodson@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MetaMask/number-to-bn/issues"
+  },
+  "homepage": "https://github.com/MetaMask/number-to-bn#readme",
+  "dependencies": {
+    "bn.js": "5.2.1",
+    "strip-hex-prefix": "1.0.0"
+  },
+  "testling": {
+    "files": "src/tests/*.js"
+  },
+  "devDependencies": {
+    "bignumber.js": "9.1.1",
+    "chai": "4.3.7",
+    "coveralls": "2.13.3",
+    "cross-env": "5.2.1",
+    "istanbul": "0.4.5",
+    "mocha": "6.2.3",
+    "pre-commit": "1.2.2",
+    "rimraf": "3.0.2",
+    "webpack": "^3.12.0",
+    "zuul": "3.12.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "pre-commit": "build"
+}

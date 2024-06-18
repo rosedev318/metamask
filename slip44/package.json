@@ -1,0 +1,76 @@
+{
+  "name": "@metamask/slip44",
+  "version": "3.1.0",
+  "description": "A simple mapping between slip44 IDs and their network metadata.",
+  "keywords": [
+    "Blockchain",
+    "Cryptocurrency",
+    "Cryptography"
+  ],
+  "homepage": "https://github.com/MetaMask/slip44#readme",
+  "bugs": {
+    "url": "https://github.com/MetaMask/slip44/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaMask/slip44.git"
+  },
+  "license": "ISC",
+  "author": "Dan Finlay <dan@danfinlay.com>",
+  "main": "slip44.json",
+  "files": [
+    "slip44.json"
+  ],
+  "scripts": {
+    "build": "node src/build.js",
+    "build:clean": "rm -f slip44.json && yarn build",
+    "fetch": "./scripts/fetch.sh",
+    "lint": "yarn lint:eslint && yarn lint:misc --check",
+    "lint:eslint": "eslint . --cache --ext js,ts",
+    "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
+    "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' '!src/slip44.md' '**/*.yml' --ignore-path .gitignore",
+    "prepack": "./scripts/prepack.sh",
+    "rebuild": "yarn fetch && yarn build:clean",
+    "rebuild:ci": "./scripts/fetch-rebuild-push.sh",
+    "setup": "yarn install && yarn allow-scripts",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "devDependencies": {
+    "@lavamoat/allow-scripts": "^2.3.1",
+    "@metamask/auto-changelog": "^3.1.0",
+    "@metamask/eslint-config": "^11.0.1",
+    "@metamask/eslint-config-jest": "^11.0.0",
+    "@metamask/eslint-config-nodejs": "^11.0.1",
+    "@metamask/eslint-config-typescript": "^11.0.0",
+    "@types/jest": "^26.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint": "^8.27.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.1.5",
+    "eslint-plugin-jsdoc": "^39.6.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^28.1.3",
+    "prettier": "^2.7.1",
+    "prettier-plugin-packagejson": "^2.2.18",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^28.0.7",
+    "typescript": "~4.8.4"
+  },
+  "packageManager": "yarn@3.2.4",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "lavamoat": {
+    "allowScripts": {
+      "@lavamoat/preinstall-always-fail": false
+    }
+  }
+}

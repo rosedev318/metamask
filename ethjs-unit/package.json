@@ -1,0 +1,244 @@
+{
+  "name": "@metamask/ethjs-unit",
+  "version": "0.3.0",
+  "description": "A simple module for handling Ethereum units (e.g. 'ether', 'wei', etc...)",
+  "main": "lib/index.js",
+  "files": [
+    "dist",
+    "internals",
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "start": "npm test",
+    "release": "npmpub",
+    "prebuild": "npm run build:clean && npm run test",
+    "prepare": "npm run build",
+    "pretest": "npm run lint",
+    "build:clean": "npm run test:clean && rimraf ./dist",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib --copy-files",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack --config ./internals/webpack/webpack.config.js ./lib/index.js --progress",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack --config ./internals/webpack/webpack.config.js ./lib/index.js --progress",
+    "build": "npm run build:commonjs && npm run test:lib && npm run build:umd && npm run build:umd:min",
+    "lint": "npm run lint:js",
+    "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern **/**.min.js",
+    "lint:js": "npm run lint:eslint -- . ",
+    "test:clean": "rimraf ./coverage",
+    "test": "mocha ./src/tests/**/*.js -R spec --timeout 2000000",
+    "test:coverage": "node ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- src/tests/**/*.js -R spec --timeout 2000000",
+    "test:lib": "mocha ./lib/tests/**/*.js -R spec --timeout 2000000"
+  },
+  "engines": {
+    "npm": ">=6",
+    "node": ">=8.17.0"
+  },
+  "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-transform-template-literals",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-literals",
+      "@babel/plugin-transform-function-name",
+      "@babel/plugin-transform-arrow-functions",
+      "@babel/plugin-transform-block-scoped-functions",
+      [
+        "@babel/plugin-transform-classes",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-object-super",
+      "@babel/plugin-transform-shorthand-properties",
+      [
+        "@babel/plugin-transform-computed-properties",
+        {
+          "loose": true
+        }
+      ],
+      [
+        "@babel/plugin-transform-for-of",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-sticky-regex",
+      "@babel/plugin-transform-unicode-regex",
+      [
+        "@babel/plugin-transform-spread",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-parameters",
+      [
+        "@babel/plugin-transform-destructuring",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-transform-block-scoping",
+      "@babel/plugin-transform-object-rest-spread",
+      "@babel/plugin-transform-member-expression-literals",
+      "@babel/plugin-transform-property-literals"
+    ],
+    "env": {
+      "commonjs": {
+        "plugins": [
+          [
+            "@babel/plugin-transform-modules-commonjs",
+            {
+              "loose": true
+            }
+          ]
+        ]
+      }
+    }
+  },
+  "peerDependencies": {
+    "@babel/runtime": "^7.0.0"
+  },
+  "dependencies": {
+    "@metamask/number-to-bn": "^1.7.1",
+    "bn.js": "^5.2.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/eslint-parser": "^7.11.0",
+    "@babel/plugin-transform-arrow-functions": "^7.0.0",
+    "@babel/plugin-transform-block-scoped-functions": "^7.0.0",
+    "@babel/plugin-transform-block-scoping": "^7.0.0",
+    "@babel/plugin-transform-classes": "^7.0.0",
+    "@babel/plugin-transform-computed-properties": "^7.0.0",
+    "@babel/plugin-transform-destructuring": "^7.0.0",
+    "@babel/plugin-transform-for-of": "^7.0.0",
+    "@babel/plugin-transform-function-name": "^7.0.0",
+    "@babel/plugin-transform-literals": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/plugin-transform-object-super": "^7.0.0",
+    "@babel/plugin-transform-parameters": "^7.0.0",
+    "@babel/plugin-transform-shorthand-properties": "^7.0.0",
+    "@babel/plugin-transform-spread": "^7.0.0",
+    "@babel/plugin-transform-sticky-regex": "^7.0.0",
+    "@babel/plugin-transform-template-literals": "^7.0.0",
+    "@babel/plugin-transform-unicode-regex": "^7.0.0",
+    "@babel/plugin-transform-member-expression-literals": "^7.0.0",
+    "@babel/plugin-transform-property-literals": "^7.0.0",
+    "@babel/plugin-transform-object-rest-spread": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.0",
+    "bignumber.js": "^9.1.2",
+    "chai": "^4.3.10",
+    "cross-env": "^6.0.3",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-import-resolver-webpack": "^0.2.4",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.14.2",
+    "istanbul": "0.4.5",
+    "json-loader": "^0.5.7",
+    "mocha": "^7.1.2",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^3.0.2",
+    "web3": "1.2.6",
+    "webpack": "^3.12.0"
+  },
+  "keywords": [
+    "ethereum",
+    "encoding",
+    "decoding"
+  ],
+  "author": "Nick Dodson <thenickdodson@gmail.com>",
+  "contributors": [
+    {
+      "name": "Richard Moore",
+      "email": "me@ricmoo.com",
+      "url": "https://ethers.io"
+    },
+    {
+      "name": "Marek Kotewicz",
+      "email": "marek@ethdev.com",
+      "url": "https://github.com/debris"
+    },
+    {
+      "name": "Fabian Vogelsteller",
+      "email": "fabian@ethdev.com",
+      "homepage": "http://frozeman.de"
+    },
+    {
+      "name": "Marian Oancea",
+      "email": "marian@ethdev.com",
+      "url": "https://github.com/cubedro"
+    },
+    {
+      "name": "Gav Wood",
+      "email": "g@ethdev.com",
+      "homepage": "http://gavwood.com"
+    },
+    {
+      "name": "Jeffery Wilcke",
+      "email": "jeff@ethdev.com",
+      "url": "https://github.com/obscuren"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MetaMask/ethjs-unit"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT",
+  "eslintConfig": {
+    "parser": "@babel/eslint-parser",
+    "extends": "airbnb",
+    "env": {
+      "node": true,
+      "mocha": true,
+      "es6": true
+    },
+    "overrides": [
+      {
+        "files": [
+          "src/tests/**.js"
+        ],
+        "rules": {
+          "import/no-extraneous-dependencies": 0
+        }
+      }
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "import/no-unresolved": 2,
+      "comma-dangle": [
+        2,
+        "always-multiline"
+      ],
+      "indent": [
+        2,
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "no-console": 1,
+      "max-len": 0,
+      "prefer-template": 2,
+      "no-use-before-define": 0,
+      "newline-per-chained-call": 0,
+      "arrow-body-style": [
+        2,
+        "as-needed"
+      ]
+    }
+  },
+  "pre-commit": "build"
+}

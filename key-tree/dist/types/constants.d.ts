@@ -1,0 +1,115 @@
+export declare const BYTES_KEY_LENGTH = 32;
+export declare const MIN_BIP_44_DEPTH = 0;
+export declare const MAX_BIP_44_DEPTH = 5;
+export declare const MAX_UNHARDENED_BIP_32_INDEX = 2147483647;
+export declare const MAX_BIP_32_INDEX = 4294967295;
+export declare type MinBIP44Depth = typeof MIN_BIP_44_DEPTH;
+export declare type MaxBIP44Depth = typeof MAX_BIP_44_DEPTH;
+export declare type BIP44Depth = MinBIP44Depth | 1 | 2 | 3 | 4 | MaxBIP44Depth;
+export declare type UnprefixedNode = `${number}'`;
+export declare type AnonymizedBIP39Node = 'm';
+export declare type BIP39StringNode = `bip39:${string}`;
+export declare type BIP39Node = BIP39StringNode | Uint8Array;
+export declare type HardenedBIP32Node = `bip32:${number}'`;
+export declare type UnhardenedBIP32Node = `bip32:${number}`;
+export declare type BIP32Node = HardenedBIP32Node | UnhardenedBIP32Node;
+export declare type HardenedSLIP10Node = `slip10:${number}'`;
+export declare type UnhardenedSLIP10Node = `slip10:${number}`;
+export declare type SLIP10PathNode = HardenedSLIP10Node | UnhardenedSLIP10Node;
+export declare const BIP44PurposeNodeToken = "bip32:44'";
+export declare const UNPREFIXED_PATH_REGEX: RegExp;
+/**
+ * e.g.
+ * -  0
+ * -  0'
+ */
+export declare const UNPREFIXED_BIP_32_PATH_REGEX: RegExp;
+/**
+ * e.g.
+ * -  bip32:0
+ * -  bip32:0'
+ */
+export declare const BIP_32_PATH_REGEX: RegExp;
+/**
+ * e.g.
+ * -  slip10:0
+ * -  slip10:0'
+ */
+export declare const SLIP_10_PATH_REGEX: RegExp;
+/**
+ * bip39:<SPACE_DELMITED_SEED_PHRASE>
+ *
+ * The seed phrase must consist of 12 <= 24 words.
+ */
+export declare const BIP_39_PATH_REGEX: RegExp;
+export declare const BIP_32_HARDENED_OFFSET = 2147483648;
+export declare type HDPathString0 = AnonymizedBIP39Node;
+export declare type HDPathString1 = `${HDPathString0} / ${HardenedBIP32Node}`;
+export declare type HDPathString2 = `${HDPathString1} / ${HardenedBIP32Node}`;
+export declare type HDPathString3 = `${HDPathString2} / ${HardenedBIP32Node}`;
+export declare type HDPathString4 = `${HDPathString3} / ${BIP32Node}`;
+export declare type HDPathString5 = `${HDPathString4} / ${BIP32Node}`;
+export declare type CoinTypeHDPathString = HDPathString2;
+export declare type ChangeHDPathString = HDPathString4;
+export declare type AddressHDPathString = HDPathString5;
+export declare type HDPathString = HDPathString0 | HDPathString1 | HDPathString2 | HDPathString3 | HDPathString4 | HDPathString5;
+export declare type RootedHDPathTuple0 = readonly [BIP39Node];
+export declare type RootedHDPathTuple1 = readonly [
+    ...RootedHDPathTuple0,
+    HardenedBIP32Node
+];
+export declare type RootedHDPathTuple2 = readonly [
+    ...RootedHDPathTuple1,
+    HardenedBIP32Node
+];
+export declare type RootedHDPathTuple3 = readonly [
+    ...RootedHDPathTuple2,
+    HardenedBIP32Node
+];
+export declare type RootedHDPathTuple4 = readonly [...RootedHDPathTuple3, BIP32Node];
+export declare type RootedHDPathTuple5 = readonly [...RootedHDPathTuple4, BIP32Node];
+export declare type RootedHDPathTuple = RootedHDPathTuple0 | RootedHDPathTuple1 | RootedHDPathTuple2 | RootedHDPathTuple3 | RootedHDPathTuple4 | RootedHDPathTuple5;
+export declare type PartialHDPathTuple1 = readonly [HardenedBIP32Node];
+export declare type PartialHDPathTuple2 = readonly [
+    ...PartialHDPathTuple1,
+    HardenedBIP32Node
+];
+export declare type PartialHDPathTuple3 = readonly [
+    ...PartialHDPathTuple2,
+    HardenedBIP32Node
+];
+export declare type PartialHDPathTuple4 = readonly [...PartialHDPathTuple3, BIP32Node];
+export declare type PartialHDPathTuple5 = readonly [...PartialHDPathTuple4, BIP32Node];
+export declare type PartialHDPathTuple6 = readonly [BIP32Node];
+export declare type PartialHDPathTuple7 = readonly [BIP32Node, BIP32Node];
+export declare type PartialHDPathTuple8 = readonly [
+    HardenedBIP32Node,
+    BIP32Node,
+    BIP32Node
+];
+export declare type PartialHDPathTuple9 = readonly [HardenedBIP32Node, BIP32Node];
+export declare type PartialHDPathTuple10 = readonly [
+    HardenedBIP32Node,
+    HardenedBIP32Node,
+    BIP32Node
+];
+export declare type PartialHDPathTuple11 = readonly [
+    HardenedBIP32Node,
+    HardenedBIP32Node,
+    BIP32Node,
+    BIP32Node
+];
+export declare type CoinTypeToAddressTuple = PartialHDPathTuple8;
+export declare type PartialHDPathTuple = PartialHDPathTuple1 | PartialHDPathTuple2 | PartialHDPathTuple3 | PartialHDPathTuple4 | PartialHDPathTuple5 | PartialHDPathTuple6 | PartialHDPathTuple7 | PartialHDPathTuple8 | PartialHDPathTuple9 | PartialHDPathTuple10 | PartialHDPathTuple11;
+/**
+ * Every ordered subset of a full HD path tuple.
+ */
+export declare type HDPathTuple = RootedHDPathTuple | PartialHDPathTuple;
+export declare type RootedSLIP10PathTuple = readonly [
+    BIP39Node,
+    ...(BIP32Node[] | SLIP10PathNode[])
+];
+export declare type SLIP10PathTuple = readonly BIP32Node[] | readonly SLIP10PathNode[];
+export declare type SLIP10Path = RootedSLIP10PathTuple | SLIP10PathTuple;
+export declare type FullHDPathTuple = RootedHDPathTuple5;
+//# sourceMappingURL=constants.d.ts.map
